@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gasolinera</title>
+    <script>
+        function sacarDatos(){
+            let obj_peticion=new XMLHttpRequest();
+            obj_peticion.open("GET","json_gasolineras.json");
+            obj_peticion.send();
+            obj_peticion.onreadystatechange=function(){
+                if(obj_peticion.readyState==4 && obj_peticion.status==200){
+                    console.log(obj_peticion.responseText);
+                    let objeto_json=JSON.parse(obj_peticion.responseText);
+                    console.log(objeto_json);
+                    pintarTabla(objeto_json);
+                }
+            }
+        }
+        function pintarTabla(objeto_json){
+                    let Gasolinera=objeto_json.ListaEESSPrecio;
+                    let tabla=document.createElement("table");
+                    for (let i = 0; i < Gasolinera.length; i++) {
+                       let direccion=Gasolinera[i].Direccion;
+                       let municipio=Gasolinera[i].Municipio;
+                       let provincia=Gasolinera[i].Provincia;
+                       let precio=Gasolinera[i].PrecioGasolina95E5;
+                        console.log("DIRECCION: "+direccion+" MUNICIPIO: "+municipio+" PROVINCIA: "+provincia+" PRECIO: "+precio);
+                        let tr=document.createElement("tr");
+                        let td_dir=document.createElement("td");
+                        let td_mun=document.createElement("td");
+                        let td_pro=document.createElement("td");
+                        let td_pre=document.createElement("td");
+                        td_dir.innerHTML=direccion;
+                        td_mun.innerHTML=municipio;
+                        td_pro.innerHTML=provincia;
+                        td_pre.innerHTML=precio;
+                        tr.appendChild(td_dir);
+                        tr.appendChild(td_mun);
+                        tr.appendChild(td_pro);
+                        tr.appendChild(td_pre);
+                        tabla.appendChild(tr);
+                    }
+                    document.getElementById("contenedor_tabla").appendChild(tabla);
+        }
+    </script>
+</head>
+<body onload="sacarDatos()">
+    <div id="contenedor_tabla">
+
+    </div>
+</body>
+</html>
